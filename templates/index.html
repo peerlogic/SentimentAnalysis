@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Getting Started with Sentiment Analysis</title>
+        <link rel="stylesheet" href="static/style.css">
+    </head>
+    <body>
+        <script>
+
+            function IsJsonString(str) {
+                if(str == '')
+                        return false;
+                else
+                    try {
+                        json_conf = JSON.parse(str);
+                        if (!(json_conf.sentences  != undefined || json_conf.review != undefined))
+                                return false;
+                    } catch (e) {
+                        return false;
+                    }
+                return true;
+            }
+
+            function submitform(){
+
+                action_url = ""
+
+                if (!IsJsonString(document.getElementById('json_config').value)){
+                   document.getElementById('response_text').innerHTML = '<h2>Please fill in the the field above with a JSON configuration (see format below)</h2>';
+                   document.getElementById('json_config').focus();
+                   return;
+                }else{
+                    conf = JSON.parse(document.getElementById('json_config').value);
+                    if(conf.sentences != undefined)
+                        action_url = window.location.href + "analyze_sentences"
+                    else if (conf.review != undefined)
+                        action_url = window.location.href + "analyze_review"
+                }
+
+                console.log("Sending Json");
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                       document.getElementById('response_text').innerHTML = xhr.responseText
+                    }
+                }
+                xhr.open(input_form.method, action_url, true);
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                xhr.send(document.getElementById("json_config").value);
+            }
+
+            function copyToClipboard(elem) {
+                  // create hidden text element, if it doesn't already exist
+                var targetId = "_hiddenCopyText_";
+                var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+                var origSelectionStart, origSelectionEnd;
+                if (isInput) {
+                    // can just use the original source element for the selection and copy
+                    target = elem;
+                    origSelectionStart = elem.selectionStart;
+                    origSelectionEnd = elem.selectionEnd;
+                } else {
+                    // must use a temporary form element for the selection and copy
+                    target = document.getElementById(targetId);
+                    if (!target) {
+                        var target = document.createElement("textarea");
+                        target.style.position = "absolute";
+                        target.style.left = "-9999px";
+                        target.style.top = "0";
+                        target.id = targetId;
+                        document.body.appendChild(target);
+                    }
+                    target.textContent = elem.textContent;
+                }
+                // select the content
+                var currentFocus = document.activeElement;
+                target.focus();
+                target.setSelectionRange(0, target.value.length);
+
+                // copy the selection
+                var succeed;
+                try {
+                      succeed = document.execCommand("copy");
+                } catch(e) {
+                    succeed = false;
+                }
+                // restore original focus
+                if (currentFocus && typeof currentFocus.focus === "function") {
+                    currentFocus.focus();
+                }
+
+                if (isInput) {
+                    // restore prior selection
+                    elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+                } else {
+                    // clear temporary content
+                    target.textContent = "";
+                }
+                return succeed;
+            }
+
+        </script>
+
+        <form class="form-container" action="http://peerlogic.csc.ncsu.edu/rainbowgraph/configure" method="POST" name="input_form">
+            <div class="form-title"><h2>Sentiment Analysis</h2></div>
+            <div class="form-title">Enter a review in a JSON format</div>
+            <div class="form-title">TODO: add link to documentation </div>
+            <p><textarea rows="50" cols="160"  name="json config" id="json_config" class="form-field"></textarea></p>
+            <p><button type="button"  class="submit-button" onclick="submitform()">Go analyze my review!</button></p>
+            <p><pre id="response_text" class="text_placeholder"></pre></p>
+        </form>
+        &nbsp;
+        <div class="form-container">
+            <div class="form-title"><h2>Example of JSON configuration</h2></div>
+             &nbsp;
+            <p><button type="button" class="submit-button" onclick="copyToClipboard(document.getElementById('json_example'))">Copy Review Example</button></p>
+            <pre id="json_example" class="text_placeholder">
+    {
+       "review": "These gloves are a good fit for my hand and seem to be decent quality. However, they are not comfortable. There are three seams that converge between the index finger and thumb which creates a very annoying point in the glove. On my first ride I thought I had something caught inside my glove, but when I stopped to check it out, it was just the way the glove was constructed. The left glove is more annoying than the right, but it is there is both gloves. After a 20 mile ride, both hands had sores because of this. Unfortunately there is no way to fix or smooth out this problem. The second issue is that the gel padding is slightly out of place (for my hands anyway) so there is no benefit. I'll be returning these and looking for a new pair of gloves."
+    }
+            </pre>
+            <p>
+                <button type="button" class="submit-button" onclick="copyToClipboard(document.getElementById('json_example'))">Copy Review Example</button>
+                &nbsp;
+                <button type="button" class="submit-button" onclick="window.scrollTo(0, 0);">Go up</button>
+            </p>
+            <p><button type="button" class="submit-button" onclick="copyToClipboard(document.getElementById('json_example2'))">Copy Sentences Example</button></p>
+            <pre id="json_example2" class="text_placeholder">
+    {
+       "sentences": ["These gloves are a good fit for my hand and seem to be decent quality.",
+            "However, they are not comfortable. There are three seams that converge between the index finger and thumb which creates a very annoying point in the glove.",
+            "On my first ride I thought I had something caught inside my glove, but when I stopped to check it out, it was just the way the glove was constructed.",
+            "The left glove is more annoying than the right, but it is there is both gloves. After a 20 mile ride, both hands had sores because of this.",
+            "Unfortunately there is no way to fix or smooth out this problem.",
+            "The second issue is that the gel padding is slightly out of place (for my hands anyway) so there is no benefit.",
+            "I'll be returning these and looking for a new pair of gloves."]
+    }
+            </pre>
+            <p>
+                <button type="button" class="submit-button" onclick="copyToClipboard(document.getElementById('json_example2'))">Copy Sentences Example</button>
+                &nbsp;
+                <button type="button" class="submit-button" onclick="window.scrollTo(0, 0);">Go up</button>
+            </p>
+        </div>
+    </body>
+</html>
