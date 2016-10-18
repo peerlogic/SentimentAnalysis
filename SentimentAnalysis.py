@@ -7,18 +7,18 @@ import colorsys
 app = Flask(__name__)
 
 
-def get_rgb_from_hue_spectrum(value, start_hue, end_hue):
-    value = round((value + 1) * 255/2 - 1)
+def get_hsl(val):
+    value = float(val)
+    H = int((value + 1) * 120/2 - 1)
     # spectrum is red (0.0), orange, yellow, green, blue, indigo, violet (0.9)
     # hue = percent * (end_hue - start_hue) + start_hue
     # lightness = 0.5
     # saturation = 1
     # r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
-    r = int(255 - value)
-    g = int(value)
-    b = 0
+    S = 70
+    L = 35
 
-    return "rgb(" + str(r) + "," + str(g) + "," + str(b) + ")"
+    return "hsl(" + str(H) + ", " + str(S) + "%, " + str(L) + "%)"
 
 @app.route('/developer', methods=['GET'])
 def developer():
@@ -42,7 +42,8 @@ def visualize_sentiment():
 
         for sentence in sentences:
             sa = vaderSentiment(sentence)
-            review = review.replace(sentence, '<font color="' + get_rgb_from_hue_spectrum(float(sa['compound']), 0, 0.3) + '">' + sentence + '[' + str(sa['compound']) + ']</font>')
+            sentiment = round(float(sa['compound']),1)
+            review = review.replace(sentence, '<font style="color:' + get_hsl(sa['compound']) + ';">' + sentence + '[' + str(sentiment) + ']</font>')
             overall_compound += float(sa['compound'])
 
         return review, status.HTTP_200_OK

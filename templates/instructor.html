@@ -79,11 +79,16 @@
         </script>
 
         <form class="form-container" action="http://peerlogic.csc.ncsu.edu/rainbowgraph/configure" method="POST" name="input_form">
-            <div class="form-title"><h2>Sentiment Analysis</h2></div>
-            <div class="form-title">Enter a review in a JSON format</div>
-            <div class="form-title">TODO: add link to documentation </div>
+            <div><h2 class="form-title">Sentiment Analysis</h2></div>
+            <div class="form-title">This page is intended for instructors, <a href="developer">klick here if you are a developer</a></div>
             <p>
-                <textarea rows="50" cols="160"  name="json config" id="json_config" class="form-field">
+            This sentiment analysis service is implemented with VADER (Valence Aware Dictionary and sEntiment Reasoner).
+            It is a lexicon and rule-based sentiment analysis tool that is specifically attuned to sentiments expressed in social media, and is also generally applicable to sentiment analysis in other domains.
+            More information about the algorithm, <a href="https://pypi.python.org/pypi/vaderSentiment">please see this link</a>
+            </p>
+            <div class="form-title">Enter review comments to analyze</div>
+            <p>
+                <textarea rows="20" cols="160"  name="json config" id="json_config" class="form-field">
 These gloves are a good fit for my hand and seem to be decent quality. However, they are not comfortable. There are three seams that converge between the index finger and thumb which creates a very annoying point in the glove. On my first ride I thought I had something caught inside my glove, but when I stopped to check it out, it was just the way the glove was constructed. The left glove is more annoying than the right, but it is there is both gloves. After a 20 mile ride, both hands had sores because of this. Unfortunately there is no way to fix or smooth out this problem. The second issue is that the gel padding is slightly out of place (for my hands anyway) so there is no benefit. I'll be returning these and looking for a new pair of gloves.
                 </textarea>
             </p>
@@ -91,8 +96,16 @@ These gloves are a good fit for my hand and seem to be decent quality. However, 
         </form>
         &nbsp;
         <div class="form-container" >
-            <div class="form-title"><h2>Sentiment Analysis Result</h2></div>
-            <div id="response_text" />
+            <h2 class="form-title">Sentiment Analysis Result</h2>
+            <div id="response_text"></div>
+        </div>
+        &nbsp;
+        <div class="footer">
+            © PeerLogic. All rights reserved.
+            <br/>
+            For support or new feature request, please contact:
+            Dr. Ferry Pramudianto | Senior Research Engineer | 919 513-0816 | fferry (at) ncsu.edu
+            Computer Science Department | North Carolina State University
         </div>
     </body>
 </html>

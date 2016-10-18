@@ -87,6 +87,8 @@ font-size: 9px;
    min-width:300px;
    padding:20px;
    width:800px;
+   display: block;
+   margin: auto;
    }
 .form-field {
    border: 1px solid #c9b7a2;
@@ -170,10 +172,34 @@ font-size: 9px;
    color: #fff;
    }
 
-.text_placeholder { width:800px; color: #685206; font-family: 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 24px; margin: 0 0 24px; text-align: justify; text-justify: inter-word; }
+.footer{
+    clear: both;
+    height: 50px;
+    display: block;
+    margin: auto;
+    font-size: 12px;
+    background-color: #725129;
+    color:#e4d5c3;
+    text-align: center;
+    font-family: 'Helvetica Neue',Helvetica,sans-serif;
+    text-decoration: none;
+    min-width:300px;
+    padding:20px;
+    width:800px;
+}
+
+.text_placeholder { width:800px; color: #685206; font-family: 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 24px; margin: 0 0 24px; text-align: justify; text-justify: inter-word; word-wrap: break-word; }
 
 h1 { color: #111; font-family: 'Helvetica Neue', sans-serif; font-size: 275px; font-weight: bold; letter-spacing: -1px; line-height: 1; text-align: center; }
 
 h2 { color: #111; font-family: 'Open Sans', sans-serif; font-size: 30px; font-weight: 300; line-height: 32px; margin: 0 0 72px; text-align: center; }
 
 p { color: #685206; font-family: 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 24px; margin: 0 0 24px; text-align: justify; text-justify: inter-word; }
+
+pre {
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}

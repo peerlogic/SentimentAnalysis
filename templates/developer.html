@@ -34,9 +34,9 @@
                 }else{
                     conf = JSON.parse(document.getElementById('json_config').value);
                     if(conf.sentences != undefined)
-                        action_url = window.location.href + "analyze_sentences"
+                        action_url = window.location.href.replace("developer", "analyze_sentences");
                     else if (conf.review != undefined)
-                        action_url = window.location.href + "analyze_review"
+                        action_url = window.location.href.replace("developer", "analyze_review");
                 }
 
                 console.log("Sending Json");
@@ -104,16 +104,44 @@
         </script>
 
         <form class="form-container" action="http://peerlogic.csc.ncsu.edu/rainbowgraph/configure" method="POST" name="input_form">
-            <div class="form-title"><h2>Sentiment Analysis</h2></div>
+            <div><h2 class="form-title">Sentiment Analysis</h2></div>
+            <div class="form-title">This page is intended for developers, <a href="instructor">klick here if you are an instructor</a></div>
+            <p>
+            This sentiment analysis service is implemented with VADER (Valence Aware Dictionary and sEntiment Reasoner), which a lexicon and rule-based sentiment analysis tool.
+            It is specifically attuned to sentiments expressed in social media, but it is also generally applicable to sentiment analysis in other domains.
+            More information about the algorithm, <a href="https://pypi.python.org/pypi/vaderSentiment">please see this link</a>
+            </p>
+            <p>
+            To use this web service, you can either POST a JSON with the following format: {"review":"review text...."} or {"sentences": ["sentence 1", "sentence 2",...] }
+            It returns an overall sentiment  of the review, which is called "overall_compound". Additionally, it returns the sentiment of each sentence as well as the individual polarity (negative, neutral, positive).
+            The service response is formatted in JSON format, as the following example shows:
+            <pre>
+    {
+      "overall_compound": -1.0,
+      "sentiments": {
+        "After a 20 mile ride, both hands had sores because of this.": {
+          "compound": 0.0,
+          "neg": 0.0,
+          "neu": 1.0,
+          "pos": 0.0
+        }, {
+        ....
+        }
+    }
+            </pre>
+            </p>
             <div class="form-title">Enter a review in a JSON format</div>
-            <div class="form-title">TODO: add link to documentation </div>
-            <p><textarea rows="50" cols="160"  name="json config" id="json_config" class="form-field"></textarea></p>
+            <p><textarea rows="20" cols="160"  name="json config" id="json_config" class="form-field"></textarea></p>
             <p><button type="button"  class="submit-button" onclick="submitform()">Go analyze my review!</button></p>
-            <p><pre id="response_text" class="text_placeholder"></pre></p>
         </form>
-        &nbsp;
+        <br/>
         <div class="form-container">
-            <div class="form-title"><h2>Example of a review in the JSON configuration</h2></div>
+            <h2 class="form-title">Result</h2>
+            <pre id="response_text" class="text_placeholder"></pre>
+        </div>
+        <br/>
+        <div class="form-container">
+            <div class="form-title"><h2 class="form-title">Example of a review in the JSON configuration</h2></div>
             <pre id="json_example" class="text_placeholder">
     {
        "review": "These gloves are a good fit for my hand and seem to be decent quality. However, they are not comfortable. There are three seams that converge between the index finger and thumb which creates a very annoying point in the glove. On my first ride I thought I had something caught inside my glove, but when I stopped to check it out, it was just the way the glove was constructed. The left glove is more annoying than the right, but it is there is both gloves. After a 20 mile ride, both hands had sores because of this. Unfortunately there is no way to fix or smooth out this problem. The second issue is that the gel padding is slightly out of place (for my hands anyway) so there is no benefit. I'll be returning these and looking for a new pair of gloves."
@@ -125,8 +153,9 @@
                 <button type="button" class="submit-button" onclick="window.scrollTo(0, 0);">Go up</button>
             </p>
         </div>
+        <br/>
         <div class="form-container">
-            <div class="form-title"><h2>Example of sentences in the JSON configuration</h2></div>
+            <div class="form-title"><h2 class="form-title">Example of sentences in the JSON configuration</h2></div>
             <pre id="json_example2" class="text_placeholder">
     {
        "sentences": ["These gloves are a good fit for my hand and seem to be decent quality.",
@@ -143,6 +172,14 @@
                 &nbsp;
                 <button type="button" class="submit-button" onclick="window.scrollTo(0, 0);">Go up</button>
             </p>
+        </div>
+        &nbsp;
+        <div class="footer">
+            © PeerLogic. All rights reserved.
+            <br/>
+            For support or new feature request, please contact:
+            Dr. Ferry Pramudianto | Senior Research Engineer | 919 513-0816 | fferry (at) ncsu.edu
+            Computer Science Department | North Carolina State University
         </div>
     </body>
 </html>
