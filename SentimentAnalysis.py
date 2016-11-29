@@ -10,11 +10,6 @@ app = Flask(__name__)
 def get_hsl(val):
     value = float(val)
     H = int((value + 1) * 120/2 - 1)
-    # spectrum is red (0.0), orange, yellow, green, blue, indigo, violet (0.9)
-    # hue = percent * (end_hue - start_hue) + start_hue
-    # lightness = 0.5
-    # saturation = 1
-    # r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
     S = 70
     L = 35
 
