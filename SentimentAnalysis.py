@@ -3,9 +3,13 @@ from flask_api import status
 from vaderSentiment.vaderSentiment import sentiment as vaderSentiment
 from nltk.tokenize import sent_tokenize
 import colorsys
+import logging
+import sys
 
 app = Flask(__name__)
 
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 
 def get_hsl(val):
     value = float(val)
@@ -36,10 +40,15 @@ def visualize_sentiment():
         overall_compound = 0.0;
 
         for sentence in sentences:
+
             sa = vaderSentiment(sentence)
+
+
             sentiment = round(float(sa['compound']),1)
             review = review.replace(sentence, '<font style="color:' + get_hsl(sa['compound']) + ';">' + sentence + '[' + str(sentiment) + ']</font>')
             overall_compound += float(sa['compound'])
+
+
 
         return review, status.HTTP_200_OK
 
@@ -55,7 +64,8 @@ def analyze_review():
         review = request.json['review']
 
     if review != '':
-        sentences = sent_tokenize(review)
+
+        sentences = sent_tokenize(review.encode('utf-8').strip())
 
         overall_compound = 0.0;
 
