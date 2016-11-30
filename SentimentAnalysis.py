@@ -52,6 +52,31 @@ def visualize_sentiment():
 
         return review, status.HTTP_200_OK
 
+@app.route('/analyze_reviews_bulk', methods=['POST'])
+def analyze_review_bulk():
+    review = ''
+    results = {}
+
+    reviews = request.json['reviews']
+
+    if len(reviews) > 0:
+
+        overall_compounds = {}
+
+        for review in reviews:
+            overall_compound = 0.0;
+
+            if review != '':
+                sentences = sent_tokenize(review.encode('utf-8').strip())
+
+                for sentence in sentences:
+                    sa = vaderSentiment(sentence)
+                    results[sentence] = sa
+                    overall_compound += float(sa['compound'])
+
+            overall_compounds[review] = overall_compound
+
+    return jsonify(sentiments=overall_compounds), status.HTTP_200_OK
 
 @app.route('/analyze_review', methods=['GET', 'POST'])
 def analyze_review():
