@@ -61,20 +61,23 @@ def analyze_review_bulk():
 
     if len(reviews) > 0:
 
-        overall_compounds = {}
+        overall_compounds = []
 
         for review in reviews:
             overall_compound = 0.0;
 
-            if review != '':
-                sentences = sent_tokenize(review.encode('utf-8').strip())
+            if review['text'] != '':
+                sentences = sent_tokenize(review['text'].encode('utf-8').strip())
 
                 for sentence in sentences:
                     sa = vaderSentiment(sentence)
                     results[sentence] = sa
                     overall_compound += float(sa['compound'])
-
-            overall_compounds[review] = overall_compound
+            c = {}
+            c['id'] = review['id']
+            c['text'] = review['text']
+            c['sentiment'] = overall_compound
+            overall_compounds.append(c)
 
     return jsonify(sentiments=overall_compounds), status.HTTP_200_OK
 
