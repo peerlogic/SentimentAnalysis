@@ -15,7 +15,7 @@
                 else
                     try {
                         json_conf = JSON.parse(str);
-                        if (!(json_conf.sentences  != undefined || json_conf.review != undefined))
+                        if (!(json_conf.sentences  != undefined || json_conf.review != undefined || json_conf.reviews != undefined))
                                 return false;
                     } catch (e) {
                         return false;
@@ -37,6 +37,8 @@
                         action_url = window.location.href.replace("developer", "analyze_sentences");
                     else if (conf.review != undefined)
                         action_url = window.location.href.replace("developer", "analyze_review");
+                    else if (conf.reviews != undefined)
+                        action_url = window.location.href.replace("developer", "analyze_reviews_bulk");
                 }
 
                 console.log("Sending Json");
@@ -112,23 +114,61 @@
             More information about the algorithm, <a href="https://pypi.python.org/pypi/vaderSentiment">please see this link</a>
             </p>
             <p>
-            To use this web service, you can either POST a JSON with the following format: {"review":"review text...."} to http://peerlogic.csc.ncsu.edu/sentiment/analyze_review.
-            Alternatively, you can also break down the review into sentences by sending a JSON like {"sentences": ["sentence 1", "sentence 2",...] } to http://peerlogic.csc.ncsu.edu/sentiment/analyze_sentences.
+            To use this web service, you can either POST a JSON with the following format:
+            </p>
+            <pre>{"review":"review text...."}</pre>
+            <p>to http://peerlogic.csc.ncsu.edu/sentiment/analyze_review.</p>
+            <p>Alternatively, you can also break down the review into sentences by sending a JSON like</p>
+            <pre>{"sentences": ["sentence 1", "sentence 2",...] }</pre>
+            <p>to http://peerlogic.csc.ncsu.edu/sentiment/analyze_sentences.</p>
+            <p>
             Both return an overall sentiment  of the review, which is called "overall_compound". Additionally, it returns the sentiment of each sentence as well as the individual polarity (negative, neutral, positive).
             The service response is formatted in JSON format, as the following example shows:
+            </p>
             <pre>
-    {
-      "overall_compound": -1.0,
-      "sentiments": {
-        "After a 20 mile ride, both hands had sores because of this.": {
-          "compound": 0.0,
-          "neg": 0.0,
-          "neu": 1.0,
-          "pos": 0.0
-        }, {
-        ....
-        }
-    }
+            {
+              "overall_compound": -1.0,
+              "sentiments": {
+                "After a 20 mile ride, both hands had sores because of this.": {
+                  "compound": 0.0,
+                  "neg": 0.0,
+                  "neu": 1.0,
+                  "pos": 0.0
+                }, {
+                ....
+                }
+            }
+            </pre>
+            <p>In addition, you could also send a bulk of reviews with the following format:</p>
+            <pre>
+            {
+              "reviews":[
+                {"id":"1","text":"bad"},
+                {"id":"2","text":"not bad"},
+                {"id":"3","text":"good"}
+                ]
+            }</pre>
+            <p>It returns the sentiments in the following format:</p>
+            <pre>
+            {
+              "sentiments": [
+                {
+                  "id": "1",
+                  "sentiment": -0.5423,
+                  "text": "bad"
+                },
+                {
+                  "id": "2",
+                  "sentiment": 0.431,
+                  "text": "not bad"
+                },
+                {
+                  "id": "3",
+                  "sentiment": 0.4404,
+                  "text": "good"
+                }
+              ]
+            }
             </pre>
             </p>
             <div class="form-title">Enter a review in a JSON format</div>

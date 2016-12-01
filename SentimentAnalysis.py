@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 from flask_api import status
 from vaderSentiment.vaderSentiment import sentiment as vaderSentiment
 from nltk.tokenize import sent_tokenize
@@ -18,6 +18,10 @@ def get_hsl(val):
     L = 35
 
     return "hsl(" + str(H) + ", " + str(S) + "%, " + str(L) + "%)"
+
+@app.route('/', methods=['GET'])
+def index():
+    return redirect('developer')
 
 @app.route('/developer', methods=['GET'])
 def developer():
