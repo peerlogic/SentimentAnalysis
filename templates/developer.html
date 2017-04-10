@@ -155,17 +155,26 @@
               "sentiments": [
                 {
                   "id": "1",
-                  "sentiment": -0.5423,
+                  "neg": "1.00",
+                  "neu": "0.00",
+                  "pos": "0.00",
+                  "sentiment": "-0.54",
                   "text": "bad"
                 },
                 {
                   "id": "2",
-                  "sentiment": 0.431,
+                  "neg": "0.00",
+                  "neu": "0.26",
+                  "pos": "0.74",
+                  "sentiment": "0.43",
                   "text": "not bad"
                 },
                 {
                   "id": "3",
-                  "sentiment": 0.4404,
+                  "neg": "0.00",
+                  "neu": "0.00",
+                  "pos": "1.00",
+                  "sentiment": "0.44",
                   "text": "good"
                 }
               ]
@@ -211,6 +220,23 @@
             </pre>
             <p>
                 <button type="button" class="submit-button" onclick="copyToClipboard(document.getElementById('json_example2'))">Copy Sentences Example</button>
+                &nbsp;
+                <button type="button" class="submit-button" onclick="window.scrollTo(0, 0);">Go up</button>
+            </p>
+        </div>
+        <br/>
+        <div class="form-container">
+            <div class="form-title"><h2 class="form-title">Example of sentences in the JSON configuration</h2></div>
+            <pre id="json_example3" class="text_placeholder">
+    {
+       "reviews": [{ "id": "1", "text": "These gloves are a good fit for my hand and seem to be decent quality. However, they are not comfortable. There are three seams that converge between the index finger and thumb which creates a very annoying point in the glove. On my first ride I thought I had something caught inside my glove, but when I stopped to check it out, it was just the way the glove was constructed."},
+                   { "id": "2", "text": "The left glove is more annoying than the right, but it is there is both gloves. After a 20 mile ride, both hands had sores because of this. Unfortunately there is no way to fix or smooth out this problem. The second issue is that the gel padding is slightly out of place (for my hands anyway) so there is no benefit."},
+                   { "id": "3", "text": "The color is great. But I'll be returning these since they are too small"}]
+
+    }
+            </pre>
+            <p>
+                <button type="button" class="submit-button" onclick="copyToClipboard(document.getElementById('json_example3'))">Copy Sentences Example</button>
                 &nbsp;
                 <button type="button" class="submit-button" onclick="window.scrollTo(0, 0);">Go up</button>
             </p>

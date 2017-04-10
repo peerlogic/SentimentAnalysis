@@ -69,6 +69,10 @@ def analyze_review_bulk():
 
         for review in reviews:
             overall_compound = 0.0;
+            overall_neg_compound = 0.0
+            overall_neu_compound = 0.0
+            overall_pos_compound = 0.0
+            sentences = []
 
             if review['text'] != '':
                 sentences = sent_tokenize(review['text'].encode('utf-8').strip())
@@ -77,10 +81,17 @@ def analyze_review_bulk():
                     sa = vaderSentiment(sentence)
                     results[sentence] = sa
                     overall_compound += float(sa['compound'])
+                    overall_neg_compound += float(sa['neg'])
+                    overall_neu_compound += float(sa['neu'])
+                    overall_pos_compound += float(sa['pos'])
+
             c = {}
             c['id'] = review['id']
             c['text'] = review['text']
-            c['sentiment'] = overall_compound
+            c['sentiment'] = format(overall_compound / len(sentences), '.2f')
+            c['neg'] = format(overall_neg_compound / len(sentences), '.2f')
+            c['neu'] = format(overall_neu_compound / len(sentences), '.2f')
+            c['pos'] = format(overall_pos_compound / len(sentences), '.2f')
             overall_compounds.append(c)
 
     return jsonify(sentiments=overall_compounds), status.HTTP_200_OK
