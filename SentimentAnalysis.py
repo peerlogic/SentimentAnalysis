@@ -2,9 +2,11 @@ from flask import Flask, render_template, request, jsonify, redirect
 from flask_api import status
 from vaderSentiment.vaderSentiment import sentiment as vaderSentiment
 from nltk.tokenize import sent_tokenize
-import colorsys
 import logging
 import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 
 app = Flask(__name__)
 
@@ -99,7 +101,7 @@ def analyze_review_bulk():
 @app.route('/analyze_review', methods=['GET', 'POST'])
 def analyze_review():
     review = ''
-    results = {}
+    results = []
 
     if request.method == 'GET':
         review = request.args.get('review')
@@ -114,10 +116,11 @@ def analyze_review():
 
         for sentence in sentences:
             sa = vaderSentiment(sentence)
-            results[sentence] = sa
+            sa['text'] = sentence
+            results.append(sa)
             overall_compound += float(sa['compound'])
 
-        return jsonify(overall_compound = overall_compound, sentiments=results), status.HTTP_200_OK
+        return jsonify(overall_compound = (overall_compound/len(results)), sentiments = results), status.HTTP_200_OK
 
 @app.route('/analyze_sentences', methods=['GET', 'POST'])
 def analyze_sentences():
