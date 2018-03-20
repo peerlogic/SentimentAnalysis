@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect
 from flask_api import status
+from flask_cors import CORS, cross_origin
 from vaderSentiment.vaderSentiment import sentiment as vaderSentiment
 from nltk.tokenize import sent_tokenize
 import logging
@@ -9,6 +10,8 @@ sys.setdefaultencoding('utf8')
 
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -34,6 +37,7 @@ def instructor():
     return render_template("instructor.html")
 
 @app.route('/visualize_sentiment', methods=['GET', 'POST'])
+@cross_origin()
 def visualize_sentiment():
     if request.method == 'GET':
         review = request.args.get('review')
@@ -51,7 +55,7 @@ def visualize_sentiment():
 
 
             sentiment = round(float(sa['compound']),1)
-            review = review.replace(sentence, '<font style="color:' + get_hsl(sa['compound']) + ';">' + sentence + '[' + str(sentiment) + ']</font>')
+            review = review.replace(sentence, '<font style="color:' + get_hsl(sa['compound']) + ';">' + sentence + '</font>')
             overall_compound += float(sa['compound'])
 
 
@@ -59,6 +63,7 @@ def visualize_sentiment():
         return review, status.HTTP_200_OK
 
 @app.route('/analyze_reviews_bulk', methods=['POST'])
+@cross_origin()
 def analyze_review_bulk():
     review = ''
     results = {}
@@ -99,6 +104,7 @@ def analyze_review_bulk():
     return jsonify(sentiments=overall_compounds), status.HTTP_200_OK
 
 @app.route('/analyze_review', methods=['GET', 'POST'])
+@cross_origin()
 def analyze_review():
     review = ''
     results = []
@@ -123,6 +129,7 @@ def analyze_review():
         return jsonify(overall_compound = (overall_compound/len(results)), sentiments = results), status.HTTP_200_OK
 
 @app.route('/analyze_sentences', methods=['GET', 'POST'])
+@cross_origin()
 def analyze_sentences():
     review = ''
     results = {}
