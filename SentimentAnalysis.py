@@ -91,14 +91,16 @@ def analyze_review_bulk():
                     overall_neg_compound += float(sa['neg'])
                     overall_neu_compound += float(sa['neu'])
                     overall_pos_compound += float(sa['pos'])
+            else:
+                review['text'] == ' '
 
             c = {}
             c['id'] = review['id']
             c['text'] = review['text']
-            c['sentiment'] = format(overall_compound / len(sentences), '.2f')
-            c['neg'] = format(overall_neg_compound / len(sentences), '.2f')
-            c['neu'] = format(overall_neu_compound / len(sentences), '.2f')
-            c['pos'] = format(overall_pos_compound / len(sentences), '.2f')
+            c['sentiment'] = 0 if len(sentences) == 0 else format(overall_compound / len(sentences), '.2f')
+            c['neg'] =  0 if len(sentences) == 0 else format(overall_neg_compound / len(sentences), '.2f')
+            c['neu'] =  0 if len(sentences) == 0 else format(overall_neu_compound / len(sentences), '.2f')
+            c['pos'] =  0 if len(sentences) == 0 else format(overall_pos_compound / len(sentences), '.2f')
             overall_compounds.append(c)
 
     return jsonify(sentiments=overall_compounds), status.HTTP_200_OK
