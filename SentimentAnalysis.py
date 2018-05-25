@@ -81,7 +81,7 @@ def analyze_review_bulk():
             overall_pos_compound = 0.0
             sentences = []
 
-            if review['text'] != '':
+            if review['text'] != None and review['text'] != '':
                 sentences = sent_tokenize(review['text'].encode('utf-8').strip())
 
                 for sentence in sentences:
